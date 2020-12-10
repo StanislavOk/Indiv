@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    <h1>Types of members</h1>
+    <input style="width: 450px;" class="form-control" id="name" name="name" type="text"> <br>
+    <input style="margin-top: -20px; margin-left: 200px;" class="btn btn-secondary" onclick="send()" type="submit" value="Find">
+
+    <script>
+        function send() {
+            let name = document.getElementById("name").value;
+            let url = 'http://localhost:8000/type';
+            if(name !== undefined && name !== ''){
+                url = `http://localhost:8000/type/find/${name}`;
+            }
+                window.location = url;
+        }
+    </script>
+    <table style="width: 450px;" class="table table-dark">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.age }}</td>
+                <td>{{ product.description }}</td>
+                <td>
+                    <a style="color: white; font-weight: bold;" href="{{ path('product_show', {'id': product.id}) }}">show</a>
+                    <a style="color: white; font-weight: bold;" href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">NO RECORDS FOUND</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a style="color: black" href="{{ path('product_new') }}">Create new</a>
+{% endblock %}

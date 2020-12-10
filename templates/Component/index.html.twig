@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Component index{% endblock %}
+
+{% block body %}
+    <h1>Family members</h1>
+    <input style="width: 450px;" class="form-control" id="name" name="name" type="text"> <br>
+    <input style="margin-top: -20px; margin-left: 200px;" class="btn btn-secondary" onclick="send()" type="submit" value="Find">
+
+    <script>
+        function send() {
+            let name = document.getElementById("name").value;
+            let url = 'http://localhost:8000/members';
+            if(name !== undefined && name !== ''){
+                url = `http://localhost:8000/members/find/${name}`;
+            }
+                window.location = url;
+            
+        }
+    </script>
+    <table style="width: 450px;" class="table table-dark">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Description</th>
+                <th>Member</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for component in components %}
+            <tr>
+                <td>{{ component.id }}</td>
+                <td>{{ component.name }}</td>
+                <td>{{ component.age }}</td>
+                <td>{{ component.description }}</td>
+                <td>{{ component.member }}</td>
+                <td>
+                    <a style="color: white; font-weight: bold;" href="{{ path('component_show', {'id': component.id}) }}">show</a>
+                    <a style="color: white; font-weight: bold;" href="{{ path('component_edit', {'id': component.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">NO RECORDS FOUND</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a style="color: black" href="{{ path('component_new') }}">Create new</a>
+{% endblock %}
